@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ValidBracketsTask
 {
@@ -7,7 +8,6 @@ namespace ValidBracketsTask
     /// </summary>
     public class BracketsValidator
     {
-        //TODO: Add necessary code and remove this comment.
         
         /// <summary>
         /// Validates of the correct placement of brackets in the string.
@@ -17,7 +17,49 @@ namespace ValidBracketsTask
         /// <exception cref="ArgumentNullException">Thrown if string is null.</exception>
         public bool IsValid(string input)
         {
-            throw new NotImplementedException();
+            if (input is null)
+            {
+                throw new ArgumentNullException($"{nameof(input)} is null.");
+            }
+
+            Stack<char> stack = new Stack<char>();
+
+            foreach (Char c in input)
+            {
+                switch (c)
+                {
+                    case '{':
+                    case '(':
+                    case '[':
+                        stack.Push(c);
+                        break;
+                    case '}':
+                        if (stack.Count == 0 || stack.Peek() != '{')
+                        {
+                            return false;
+                        }
+                        stack.Pop();
+                        break;
+                    case ')':
+                        if (stack.Count == 0 || stack.Peek() != '(')
+                        {
+                            return false;
+                        }
+                        stack.Pop();
+                        break;
+                    case ']':
+                        if (stack.Count == 0 || stack.Peek() != '[')
+                        {
+                            return false;
+                        }
+                        stack.Pop();
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return stack.Count == 0;
         }
     }
 }
